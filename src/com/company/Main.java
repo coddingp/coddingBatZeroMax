@@ -1,16 +1,24 @@
 package com.company;
-
 import java.util.Arrays;
-import java.util.Scanner;
 
 public class Main {
-
     public static void main(String[] args) {
-        int[] nums = {7, 0, 4, 3, 0, 1};
-        zeroMax(nums);
-        System.out.println(Arrays.toString(nums));
+        int[] nums0 = {0, 5, 0, 3};
+        int[] nums1 = {0, 4, 0, 3};
+        int[] nums2 = {0, 1, 0};
+        int[] nums3 = {0, 1, 5};
+        int[] nums4 = {0, 2, 0};
+        int[] nums5 = {1};
+        int[] nums6 = {0};
+        int[] nums7 = {};
+        int[] nums8 = {7, 0, 4, 3, 0, 2};
+        int[] nums9 = {7, 0, 4, 3, 0, 1};
+        int[] nums10 = {7, 0, 4, 3, 0, 0};
+        int[] nums11 = {7, 0, 1, 0, 0, 7};
+        System.out.println(Arrays.toString(nums9));
+        zeroMax(nums9);
+        System.out.println(Arrays.toString(nums9));
     }
-
     public static int[] zeroMax(int[] nums) {
         boolean thereAreNoOdds = true;
         boolean thereAreNoEven = true;
@@ -30,12 +38,9 @@ public class Main {
                         }
                     }
                 }
-                i++;
             }
         }
-
         int[] oddIndexesInNums = new int[countOdd];
-
         int[] odds = new int[countOdd];//creating void array of odds to check later which of odds values bigger
         int oddIndex = 0; // making it equal to zero again
         for (int i = 0; i < nums.length; i++) { //assigning values to each of the odds array cells
@@ -50,8 +55,6 @@ public class Main {
                 }
             }
         }
-
-
         if (thereAreNoOdds) {//if there are no odds then there MUST be no changes in given array
             return nums;
         } else { //if there are odds we will check which of the odds value is bigger than others
@@ -61,17 +64,16 @@ public class Main {
                     maxOdd = odd;
                 }
             }
-            int tempForExchange = 0;
+            int tempForExchange;
             for (int i = 0; i < odds.length; i++) {
                 if (i + 1 < odds.length && odds[i] < odds[i + 1]) {
                     tempForExchange = odds[i];
                     odds[i] = odds[i + 1];
-                    odds[i+1] = tempForExchange;
+                    odds[i + 1] = tempForExchange;
                 }
             }
             System.out.println(Arrays.toString(odds));
 //            System.out.println("Проверяем чему равен булиан thereAreNoEven: " + thereAreNoEven);
-
             if (thereAreNoEven) {
                 for (int i = 0; i < nums.length; i++) {
                     if (nums[i] == 0) {
@@ -85,27 +87,32 @@ public class Main {
                             if (nums[j] == 0 && oddIndex > 0 && !didProgramWentThroughMaxOdd) {
                                 nums[j] = maxOdd;
                             } else if (nums[j] == 0 && oddIndex > 0 && didProgramWentThroughMaxOdd) {
-                                nums[j] = nums[oddIndexesInNums[odds.length-oddIndex]];
+                                nums[j] = nums[oddIndexesInNums[odds.length - oddIndex - 1]];
                             }
-
                             i++;
                         }
                     }
                 }
                 return nums;
             } else {
-                System.out.println("Нужно изменить код после этой полосы...  Что делать если в массиве\"nums\" есть и odds и evens и ноли :)");
-                Scanner scanAnswer = new Scanner(System.in);
-                String froScanAnswer = scanAnswer.nextLine();
-                System.out.println("Program will do next: " + froScanAnswer);
                 for (int i = 0; i < nums.length; i++) {
                     if (nums[i] == 0) {
                         for (int j = i; j < nums.length; j++) {
                             if (j + 1 < nums.length) {
-                                if (nums[j + 1] > 0) {
+                                if (nums[j] == maxOdd) {
+                                    didProgramWentThroughMaxOdd = true;
+                                }
+                                if (nums[j] == 0 && oddIndex > 0 && !didProgramWentThroughMaxOdd) {
                                     nums[j] = maxOdd;
-                                    j++;
                                     i++;
+                                    continue;
+                                } else if (nums[j] == 0 && oddIndex > 0 && didProgramWentThroughMaxOdd) {
+                                    nums[j] = nums[oddIndexesInNums[odds.length - oddIndex - 1]];
+                                    i++;
+                                    continue;
+                                }
+                                if (nums[j] % 2 != 0) {
+                                    oddIndex--;
                                 }
                             }
                             i++;
